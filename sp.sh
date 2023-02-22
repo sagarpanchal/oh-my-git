@@ -12,10 +12,10 @@ sagar-bash-complete() {
 kill-by-port() {
   local _pidList
   _pidList="$(lsof -t -i:"$1")"
-  _pidList="${_pidList//$'\n'/ }"
+  _pidList=${_pidList//$'\n'/ }
 
   if [ -n "$_pidList" ]; then
-    kill -9 "$_pidList"
+    eval "kill -9 $_pidList"
   else
     echo -e "No process found running on port - $1" >&2
     return
