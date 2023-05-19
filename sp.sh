@@ -49,18 +49,26 @@ function git-fetch-ref {
   git fetch "$_remote" "refs/heads/$1*:refs/remotes/origin/$1*"
 }
 
-function git-get {
+function git-fetch {
   local _branch=$1
   local _remote=$2
   [[ -z "$_branch" ]] && _branch="$(git-current-branch)"
   [[ -z "$_remote" ]] && _remote="origin"
 
-  git fetch "$_remote" "$_branch" &&
+  git fetch "$_remote" "$_branch"
+}
+
+function git-pull {
+  local _branch=$1
+  local _remote=$2
+  [[ -z "$_branch" ]] && _branch="$(git-current-branch)"
+  [[ -z "$_remote" ]] && _remote="origin"
+
+  git-fetch "$_branch" "$_remote" &&
     git pull "$_remote" "$_branch" --no-edit
 }
-alias git-pull=git-get
 
-function git-set {
+function git-push {
   local _branch=$1
   local _remote=$2
   [[ -z "$_branch" ]] && _branch="$(git-current-branch)"
@@ -68,7 +76,6 @@ function git-set {
 
   git push -u "$_remote" "$_branch"
 }
-alias git-push=git-set
 
 function git-sync {
   git-pull "$1" "$2" &&
@@ -86,12 +93,13 @@ function git-reset {
   [[ -z "$_branch" ]] && _branch="$(git-current-branch)"
   [[ -z "$_remote" ]] && _remote="origin"
 
-  git fetch "$_remote" "$_branch" &&
+  git-fetch "$_branch" "$_remote" &&
     git reset --hard "$_remote"/"$_branch"
 }
 
 function git-clean-all {
-  git-reset && git clean -df
+  git-reset &&
+    git clean -df
 }
 
 function git-gc {
