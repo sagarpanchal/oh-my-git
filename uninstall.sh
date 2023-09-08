@@ -6,7 +6,9 @@ zshrc="$HOME/.zshrc"
 
 uninstall() {
   {
-    sed -i "$1" -e '/Load SP/,+3d' "$1"
+    # sed -i'.old' -e '/# SP/,+3d' "$1"
+    # sed -i'.old' -e :a -e '/^\n*$/{$d;N;};/\n$/ba' "$1"
+    sed -i'.old' -e :a -e '/^\n*$/{$d;N;};/\n$/ba' -e '/# SP/,+3d' "$1"
   } && {
     echo "SP Uninstalled from $1" >&1
   }

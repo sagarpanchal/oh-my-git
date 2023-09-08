@@ -9,6 +9,22 @@ function sagar-bash-complete {
   COMPREPLY=($(compgen -W "${2//$'\n'/ }" -- "$1"))
 }
 
+function os-impl-name {
+  local _osImplName
+  _osImplName="$(uname -s)"
+
+  case "${_osImplName}" in
+  Linux*) machine=Linux ;;
+  Darwin*) machine=Mac ;;
+  CYGWIN*) machine=Cygwin ;;
+  MINGW*) machine=MinGw ;;
+  MSYS_NT*) machine=Git ;;
+  *) machine="UNKNOWN:${_osImplName}" ;;
+  esac
+
+  echo "${machine}"
+}
+
 function kill-by-port {
   local _pidList
   _pidList="$(lsof -t -i:"$1")"
