@@ -35,7 +35,7 @@ function git-remotes {
 }
 
 function git-branches {
-  git --no-pager branch --format='%(refname:short)'
+  git --no-pager branch --format='%(refname:lstrip=2)'
 }
 
 function git-current-branch {
