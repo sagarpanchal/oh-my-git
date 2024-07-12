@@ -1,0 +1,33 @@
+# shellcheck disable=SC2148
+
+_git_branch_completions() {
+  COMPREPLY=()
+  case $COMP_CWORD in
+  1) sagar-bash-complete "${COMP_WORDS[COMP_CWORD]}" "$(git-branches)" ;;
+  esac
+  return 0
+}
+
+_git_remote_completions() {
+  COMPREPLY=()
+  case $COMP_CWORD in
+  1) sagar-bash-complete "${COMP_WORDS[COMP_CWORD]}" "$(git-remotes)" ;;
+  esac
+  return 0
+}
+
+_git_branch_remote_completions() {
+  COMPREPLY=()
+  case $COMP_CWORD in
+  1) sagar-bash-complete "${COMP_WORDS[COMP_CWORD]}" "$(git-branches)" ;;
+  2) sagar-bash-complete "${COMP_WORDS[COMP_CWORD]}" "$(git-remotes)" ;;
+  esac
+  return 0
+}
+
+complete -F _git_branch_remote_completions -- git-fetch-ref
+complete -F _git_branch_remote_completions -- git-fetch
+complete -F _git_branch_remote_completions -- git-pull
+complete -F _git_branch_remote_completions -- git-push
+complete -F _git_branch_remote_completions -- git-sync
+complete -F _git_branch_remote_completions -- git-reset
