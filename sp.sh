@@ -52,6 +52,36 @@ function local-ip-v6 {
   ifconfig | grep "inet6 f" | awk "{ print \$2 }"
 }
 
+function load-env {
+  local env_file="$1"
+
+  if [[ ! -f "$env_file" ]]; then
+    echo "File not found: $env_file"
+    return 1
+  fi
+
+  while IFS= read -r line || [ -n "$line" ]; do
+    # Skip empty lines and comments
+    if [[ -z "$line" || "$line" == \#* ]]; then
+      continue
+    fi
+
+    # Handle spaces around the equals sign
+    key=$(echo "$line" | cut -d '=' -f 1 | xargs)
+    value=$(echo "$line" | cut -d '=' -f 2- | xargs)
+
+    # Remove surrounding quotes if they exist
+    if [[ "$value" =~ ^\".*\"$ ]]; then
+      value="${value:1:-1}"  # Remove double quotes
+    elif [[ "$value" =~ ^\'.*\'$ ]]; then
+      value="${value:1:-1}"  # Remove single quotes
+    fi
+
+    # Export the variable
+    export "$key=$value"
+  done < "$env_file"
+}
+
 function git-remotes {
   git remote
 }
