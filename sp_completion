@@ -1,26 +1,31 @@
 # shellcheck disable=SC2148
 
-_git_branch_completions() {
+function _bash-complete {
+  # shellcheck disable=SC2207
+  COMPREPLY=($(compgen -W "${2//$'\n'/ }" -- "$1"))
+}
+
+function _git_branch_completions {
   COMPREPLY=()
   case $COMP_CWORD in
-  1) sagar-bash-complete "${COMP_WORDS[COMP_CWORD]}" "$(git-branches)" ;;
+  1) _bash-complete "${COMP_WORDS[COMP_CWORD]}" "$(git-branches)" ;;
   esac
   return 0
 }
 
-_git_remote_completions() {
+function _git_remote_completions {
   COMPREPLY=()
   case $COMP_CWORD in
-  1) sagar-bash-complete "${COMP_WORDS[COMP_CWORD]}" "$(git-remotes)" ;;
+  1) _bash-complete "${COMP_WORDS[COMP_CWORD]}" "$(git-remotes)" ;;
   esac
   return 0
 }
 
-_git_branch_remote_completions() {
+function _git_branch_remote_completions {
   COMPREPLY=()
   case $COMP_CWORD in
-  1) sagar-bash-complete "${COMP_WORDS[COMP_CWORD]}" "$(git-branches)" ;;
-  2) sagar-bash-complete "${COMP_WORDS[COMP_CWORD]}" "$(git-remotes)" ;;
+  1) _bash-complete "${COMP_WORDS[COMP_CWORD]}" "$(git-branches)" ;;
+  2) _bash-complete "${COMP_WORDS[COMP_CWORD]}" "$(git-remotes)" ;;
   esac
   return 0
 }

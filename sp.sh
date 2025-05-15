@@ -1,13 +1,8 @@
-# shellcheck disable=SC2148,SC2120
+# shellcheck disable=SC2148,SC2120,SC2068
 
 # Name: oh-my-git
 # Author: Sagar Panchal (panchal.sagar@outlook.com)
 # Permission to copy and modify is granted under the BSD license
-
-function sagar-bash-complete {
-  # shellcheck disable=SC2207
-  COMPREPLY=($(compgen -W "${2//$'\n'/ }" -- "$1"))
-}
 
 function os-impl-name {
   local _osImplName
@@ -72,14 +67,14 @@ function load-env {
 
     # Remove surrounding quotes if they exist
     if [[ "$value" =~ ^\".*\"$ ]]; then
-      value="${value:1:-1}"  # Remove double quotes
+      value="${value:1:-1}" # Remove double quotes
     elif [[ "$value" =~ ^\'.*\'$ ]]; then
-      value="${value:1:-1}"  # Remove single quotes
+      value="${value:1:-1}" # Remove single quotes
     fi
 
     # Export the variable
     export "$key=$value"
-  done < "$env_file"
+  done <"$env_file"
 }
 
 function git-remotes {
@@ -130,7 +125,6 @@ function git-pull {
   [[ -z "$_remote" ]] && _remote="origin"
 
   # Fetch the latest changes
-  # shellcheck disable=SC2068
   git-fetch "$_branch" "$_remote" &&
     # Pull the changes and forward any additional arguments
     git pull "$_remote" "$_branch" --no-edit
@@ -149,12 +143,10 @@ function git-push {
   [[ -z "$_remote" ]] && _remote="origin"
 
   # Push the changes and forward any additional arguments
-  # shellcheck disable=SC2068
   git push -u "$_remote" "$_branch" $@
 }
 
 function git-sync {
-  # shellcheck disable=SC2068
   git-pull $@ &&
     git-push $@
 }
